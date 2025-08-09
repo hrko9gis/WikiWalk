@@ -1,5 +1,5 @@
 {
-  "name": "wikipedia-map-app",
+  "name": "WikiWalk",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -49,7 +49,6 @@
     "lucide-react": "^0.510.0",
     "next-themes": "^0.4.6",
     "react": "^19.1.0",
-    "react-day-picker": "8.10.1",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.56.3",
     "react-leaflet": "^5.0.0",
