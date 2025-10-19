@@ -175,7 +175,7 @@ const Map = ({ onFacilityClick }) => {
         center={[34.653528, 135.386417]}
         zoom={15}
         zoomControl={false}
-        style={{ height: '100vh', width: '100%' }}
+        style={{ height: '100%', width: '100%' }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
