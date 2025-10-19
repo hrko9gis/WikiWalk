@@ -18,7 +18,7 @@ function App() {
   }
 
   return (
-    <div className="relative w-full h-dvh">
+    <div className="relative w-full h-svh">
       {/* ヘッダー */}
       <div className="absolute top-2.5 left-2.5 z-[1001] bg-white rounded-sm shadow-lg p-3 flex items-center gap-3 border border-gray-400">
         <h1 className="text-base font-bold text-gray-900">WikiWalk</h1>
