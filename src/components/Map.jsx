@@ -28,7 +28,7 @@ const LocateButton = () => {
   const map = useMap()
 
   const handleClick = () => {
-    map.locate({ setView: true, maxZoom: 14 })
+    map.locate({ setView: true })
   }
 
   return (
