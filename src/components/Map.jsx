@@ -176,11 +176,11 @@ const Map = ({ onFacilityClick }) => {
     <div className="relative">
 
       <div style={{
-        position:'absolute', left:20, bottom:15, zIndex:1000,
+        position:'absolute', left:2.5, bottom:30, zIndex:1000,
         background:'rgba(255,255,255,0.7)', padding:'6px 10px', borderRadius:6
       }}>
-        <div>Lat: {mapCenter.lat.toFixed(5)}</div>
-        <div>Lng: {mapCenter.lng.toFixed(5)}</div>
+        <div>Lat: {mapCenter.lat.toFixed(3)}</div>
+        <div>Lng: {mapCenter.lng.toFixed(3)}</div>
       </div>
 
       <MapContainer
