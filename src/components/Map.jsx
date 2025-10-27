@@ -176,7 +176,7 @@ const Map = ({ onFacilityClick }) => {
     <div className="relative">
 
       <div style={{
-        position:'absolute', top:2.5, left:120, zIndex:1000,
+        position:'absolute', top:10, left:110, zIndex:1000,
         background:'rgba(255,255,255,0.6)', padding:'3px 5px', borderRadius:6
       }}>
         <div>{mapCenter.lat.toFixed(6)} , {mapCenter.lng.toFixed(6)}</div>
