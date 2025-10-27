@@ -117,8 +117,6 @@ const Map = ({ onFacilityClick }) => {
       10000 // 最大10km
     )
 
-    setMapCenter({ lat: center.lat, lng: center.lng })
-
     try {
       const results = await searchNearby(center.lat, center.lng, radius, 120)
       
@@ -138,6 +136,8 @@ const Map = ({ onFacilityClick }) => {
     } catch (err) {
       console.error('Geosearch failed:', err)
     }
+    
+    setMapCenter({ lat: center.lat, lng: center.lng })
   }
 
   // 初期データの設定
