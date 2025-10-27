@@ -106,6 +106,7 @@ const Map = ({ onFacilityClick }) => {
   const [facilities, setFacilities] = useState([])
   const [isAutoSearch, setIsAutoSearch] = useState(true)
   const { searchNearby, loading, error } = useGeosearch()
+  const [mapCenter, setMapCenter] = useState({ lat: 34.653528, lng: 135.386417 })
 
   // 地図移動時の処理
   const handleMapMove = async (center, bounds) => {
@@ -115,6 +116,8 @@ const Map = ({ onFacilityClick }) => {
       center.distanceTo(bounds.getNorthEast()),
       10000 // 最大10km
     )
+
+    setMapCenter({ lat: center.lat, lng: center.lng })
 
     try {
       const results = await searchNearby(center.lat, center.lng, radius, 120)
@@ -171,6 +174,16 @@ const Map = ({ onFacilityClick }) => {
 
   return (
     <div className="relative">
+
+      <div style={{
+        position:'absolute', right:12, bottom:12, zIndex:1000,
+        background:'rgba(255,255,255,0.9)', padding:'6px 10px', borderRadius:6
+      }}>
+        <div><strong>Center</strong></div>
+        <div>Lat: {mapCenter.lat.toFixed(6)}</div>
+        <div>Lng: {mapCenter.lng.toFixed(6)}</div>
+      </div>
+
       <MapContainer
         center={[34.653528, 135.386417]}
         zoom={15}
