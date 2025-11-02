@@ -25,8 +25,8 @@ export default function OpenStreetMapEditButton() {
     <div
       style={{
         position: 'absolute',
-        top: '12px',
-        right: '12px',
+        bottom: '12px',
+        right: '60px',
         zIndex: 1000,
         background: 'white',
         padding: '6px 10px',
@@ -41,7 +41,7 @@ export default function OpenStreetMapEditButton() {
         rel="noopener noreferrer"
         style={{ textDecoration: 'none', color: '#0077cc' }}
       >
-        🗺️ OSMで編集
+        OSM Edit
       </a>
     </div>
   )
