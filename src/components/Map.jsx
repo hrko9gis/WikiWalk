@@ -5,6 +5,7 @@ import L from 'leaflet'
 import useGeosearch from '../hooks/useGeosearch'
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import "@geoman-io/leaflet-geoman-free";
+import OpenStreetMapEditButton from './OpenStreetMapEditButton'
 
 // Leafletのデフォルトアイコンの問題を修正
 delete L.Icon.Default.prototype._getIconUrl
@@ -192,7 +193,9 @@ const Map = ({ onFacilityClick }) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-
+        
+        <OpenStreetMapEditButton />
+        
         <ZoomControl
           position="bottomright"
         />
