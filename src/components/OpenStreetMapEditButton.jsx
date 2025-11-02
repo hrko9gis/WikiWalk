@@ -25,8 +25,8 @@ export default function OpenStreetMapEditButton() {
     <div
       style={{
         position: 'absolute',
-        bottom: '27px',
-        right: '53px',
+        bottom: '28px',
+        right: '55px',
         zIndex: 1000,
         background: 'white',
         padding: '6px 10px',
