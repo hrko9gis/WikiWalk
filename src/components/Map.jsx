@@ -35,7 +35,7 @@ const LocateButton = () => {
   return (
     <button
       onClick={handleClick}
-      className="absolute bottom-25 right-2.5 z-[1000] bg-white rounded-sm shadow-md px-2 py-2 text-sm hover:bg-gray-100 items-center border border-gray-400"
+      className="absolute bottom-25 right-2.5 z-[1000] bg-white rounded-sm shadow-md px-2 py-2 text-sm font-bold hover:bg-gray-100 items-center border border-gray-400"
     >
       ▼
     </button>
