@@ -165,6 +165,14 @@ const Map = ({ onFacilityClick }) => {
     }
     
     initialSearch()
+    
+    // 地図インスタンスを即座に取得できないため setTimeout で遅延
+    setTimeout(() => {
+      const map = document.querySelector(".leaflet-container")?._leaflet_map;
+      if (map) {
+        map.locate({ setView: true, maxZoom: 16 })
+      }
+    }, 300);
   }, [isAutoSearch])
 
   const handleMarkerClick = (facility, e) => {
@@ -185,7 +193,8 @@ const Map = ({ onFacilityClick }) => {
 
       <MapContainer
         whenCreated={(map) => {
-          map.locate({ setView: true, maxZoom: 16 })
+          // map インスタンスを DOM に保存（簡易的に）
+          document.querySelector(".leaflet-container")._leaflet_map = map;
         }}
         center={[34.653528, 135.386417]}
         zoom={15}
