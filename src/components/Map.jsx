@@ -109,34 +109,6 @@ const Map = ({ onFacilityClick }) => {
   const { searchNearby, loading, error } = useGeosearch()
   const [mapCenter, setMapCenter] = useState({ lat: 34.653528, lng: 135.386417 })
 
-  // 初期ロード時に現在地を取得して、成功したらマップを移動
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      console.log("Geolocation not supported");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const { latitude, longitude } = pos.coords;
-        setMapCenter({ lat: latitude, lng: longitude });
-
-        // 地図インスタンスを即座に取得できないため setTimeout で遅延
-        setTimeout(() => {
-          const map = mapRef.current
-          if (map) {
-            map.setView([latitude, longitude], 16);
-          }
-        }, 300);
-      },
-      (err) => {
-        console.log("Geolocation error:", err);
-        // → 失敗してもデフォルト位置（大阪：34.653528, 135.386417）のまま
-      },
-      { enableHighAccuracy: true, timeout: 5000 }
-    );
-  }, []);
-  
   // 地図移動時の処理
   const handleMapMove = async (center, bounds) => {
     if (!isAutoSearch) return
@@ -212,9 +184,6 @@ const Map = ({ onFacilityClick }) => {
       </div>
 
       <MapContainer
-        whenCreated={(map) => {
-          mapRef.current = map
-        }}
         center={[34.653528, 135.386417]}
         zoom={15}
         zoomControl={false}
