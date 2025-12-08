@@ -109,6 +109,29 @@ const Map = ({ onFacilityClick }) => {
   const { searchNearby, loading, error } = useGeosearch()
   const [mapCenter, setMapCenter] = useState({ lat: 34.653528, lng: 135.386417 })
 
+  // --------------------------------
+  // 初回ロード時：現在地を取得
+  // --------------------------------
+  useEffect(() => {
+    if (!navigator.geolocation) return
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords
+        setMapCenter({ lat: latitude, lng: longitude })
+
+        setTimeout(() => {
+          const map = mapRef.current
+          if (map) map.setView([latitude, longitude], 16)
+        }, 300)
+      },
+      () => {
+        console.log('位置情報取得失敗 → デフォルト位置で表示')
+      },
+      { enableHighAccuracy: true, timeout: 5000 }
+    )
+  }, [])
+  
   // 地図移動時の処理
   const handleMapMove = async (center, bounds) => {
     if (!isAutoSearch) return
@@ -165,14 +188,6 @@ const Map = ({ onFacilityClick }) => {
     }
     
     initialSearch()
-    
-    // 地図インスタンスを即座に取得できないため setTimeout で遅延
-    setTimeout(() => {
-      const map = document.querySelector(".leaflet-container")?._leaflet_map;
-      if (map) {
-        map.locate({ setView: true, maxZoom: 16 })
-      }
-    }, 300);
   }, [isAutoSearch])
 
   const handleMarkerClick = (facility, e) => {
