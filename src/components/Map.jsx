@@ -123,7 +123,7 @@ const Map = ({ onFacilityClick }) => {
 
         // 地図インスタンスを即座に取得できないため setTimeout で遅延
         setTimeout(() => {
-          const map = document.querySelector(".leaflet-container")?._leaflet_map;
+          const map = mapRef.current
           if (map) {
             map.setView([latitude, longitude], 16);
           }
@@ -213,8 +213,7 @@ const Map = ({ onFacilityClick }) => {
 
       <MapContainer
         whenCreated={(map) => {
-          // map インスタンスを DOM に保存（簡易的に）
-          document.querySelector(".leaflet-container")._leaflet_map = map;
+          mapRef.current = map
         }}
         center={[34.653528, 135.386417]}
         zoom={15}
