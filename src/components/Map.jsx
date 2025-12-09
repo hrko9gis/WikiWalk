@@ -166,20 +166,6 @@ const Map = ({ onFacilityClick }) => {
     )
   }, [])
 
-  // 読み込み中はローディング表示
-  if (!mapReady || !mapCenter) {
-    return (
-      <div style={{textAlign:'center', paddingTop:'40px'}}>
-        …
-      </div>
-    )
-  }
-
-  useEffect(() => {
-    if (!mapReady || !mapCenter) return;
-    mapRef.current.setView([mapCenter.lat, mapCenter.lng], zoomLevel);
-  }, [mapReady]);
-
   const handleMarkerClick = (facility, e) => {
     // クリック位置を画面座標で取得
     const containerPoint = e.containerPoint
