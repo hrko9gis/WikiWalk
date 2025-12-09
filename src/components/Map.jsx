@@ -105,14 +105,13 @@ function FreehandControl() {
 
 const Map = ({ onFacilityClick }) => {
   const [facilities, setFacilities] = useState([])
-  const [isAutoSearch, setIsAutoSearch] = useState(true)
   const { searchNearby, loading, error } = useGeosearch()
-  const [mapCenter, setMapCenter] = useState({ lat: 34.653528, lng: 135.386417 })
+  const [mapReady, setMapReady] = useState(false)
+  const [mapCenter, setMapCenter] = useState(null)
+  const [zoomLevel, setZoomLevel] = useState(15)
 
   // 地図移動時の処理
   const handleMapMove = async (center, bounds) => {
-    if (!isAutoSearch) return
-
     const radius = Math.min(
       center.distanceTo(bounds.getNorthEast()),
       10000 // 最大10km
@@ -143,29 +142,38 @@ const Map = ({ onFacilityClick }) => {
 
   // 初期データの設定
   useEffect(() => {
-    const initialSearch = async () => {
-      try {
-        const results = await searchNearby(34.653528, 135.386417, 10000, 120)
-        
-        const newFacilities = results.map((result, index) => ({
-          id: `geo_${result.pageid || index}`,
-          name: result.title,
-          position: [result.lat, result.lon],
-          wikipediaTitle: result.title,
-          extract: result.extract,
-          thumbnail: result.thumbnail,
-          content_urls: result.content_urls,
-          isGeoResult: true
-        }))
-
-        setFacilities(newFacilities)
-      } catch (err) {
-        console.error('Initial geosearch failed:', err)
-      }
+    if (!navigator.geolocation) {
+      // 失敗 → デフォルト座標
+      setMapCenter({ lat: 34.653528, lng: 135.386417 })
+      setMapReady(true)
+      return
     }
     
-    initialSearch()
-  }, [isAutoSearch])
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setMapCenter({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        })
+        setZoomLevel(16)
+        setMapReady(true)
+      },
+      () => {
+        setMapCenter({ lat: 34.653528, lng: 135.386417 })
+        setMapReady(true)
+      },
+      { enableHighAccuracy: true }
+    )
+  }, [])
+
+  // 読み込み中はローディング表示
+  if (!mapReady || !mapCenter) {
+    return (
+      <div style={{textAlign:'center', paddingTop:'40px'}}>
+        …
+      </div>
+    )
+  }
 
   const handleMarkerClick = (facility, e) => {
     // クリック位置を画面座標で取得
@@ -184,8 +192,8 @@ const Map = ({ onFacilityClick }) => {
       </div>
 
       <MapContainer
-        center={[34.653528, 135.386417]}
-        zoom={15}
+        center={[mapCenter.lat, mapCenter.lng]}
+        zoom={zoomLevel}
         zoomControl={false}
         style={{ height: '100dvh', width: '100%' }}
       >
@@ -200,7 +208,7 @@ const Map = ({ onFacilityClick }) => {
           position="bottomright"
         />
         
-        {isAutoSearch && (
+        {(
           <MapEventHandler onMapMove={handleMapMove} />
         )}
         
