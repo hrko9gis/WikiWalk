@@ -164,29 +164,6 @@ const Map = ({ onFacilityClick }) => {
       },
       { enableHighAccuracy: true }
     )
-    
-    const initialSearch = async () => {
-      try {
-        const results = await searchNearby(mapCenter.lat, mapCenter.lng, 10000, 120)
-        
-        const newFacilities = results.map((result, index) => ({
-          id: `geo_${result.pageid || index}`,
-          name: result.title,
-          position: [result.lat, result.lon],
-          wikipediaTitle: result.title,
-          extract: result.extract,
-          thumbnail: result.thumbnail,
-          content_urls: result.content_urls,
-          isGeoResult: true
-        }))
-
-        setFacilities(newFacilities)
-      } catch (err) {
-        console.error('Initial geosearch failed:', err)
-      }
-    }
-    
-    initialSearch()
   }, [])
 
   // 読み込み中はローディング表示
@@ -197,6 +174,29 @@ const Map = ({ onFacilityClick }) => {
       </div>
     )
   }
+
+  const initialSearch = async () => {
+    try {
+      const results = await searchNearby(mapCenter.lat, mapCenter.lng, 10000, 120)
+      
+      const newFacilities = results.map((result, index) => ({
+        id: `geo_${result.pageid || index}`,
+        name: result.title,
+        position: [result.lat, result.lon],
+        wikipediaTitle: result.title,
+        extract: result.extract,
+        thumbnail: result.thumbnail,
+        content_urls: result.content_urls,
+        isGeoResult: true
+      }))
+
+      setFacilities(newFacilities)
+    } catch (err) {
+      console.error('Initial geosearch failed:', err)
+    }
+  }
+
+  initialSearch()
 
   const handleMarkerClick = (facility, e) => {
     // クリック位置を画面座標で取得
