@@ -175,6 +175,11 @@ const Map = ({ onFacilityClick }) => {
     )
   }
 
+  useEffect(() => {
+    if (!mapReady || !mapCenter) return;
+    mapRef.current.setView([mapCenter.lat, mapCenter.lng], zoomLevel);
+  }, [mapReady]);
+
   const handleMarkerClick = (facility, e) => {
     // クリック位置を画面座標で取得
     const containerPoint = e.containerPoint
