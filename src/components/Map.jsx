@@ -175,38 +175,6 @@ const Map = ({ onFacilityClick }) => {
     )
   }
 
-  // mapCenter が確定したら初期データを読み込む
-  useEffect(() => {
-    if (!mapCenter) return
-
-    (async () => {
-      try {
-        const results = await searchNearby(
-          mapCenter.lat,
-          mapCenter.lng,
-          10000,
-          120
-        )
-
-        const list = results.map((result, index) => ({
-          id: `geo_${result.pageid || index}`,
-          name: result.title,
-          position: [result.lat, result.lon],
-          wikipediaTitle: result.title,
-          extract: result.extract,
-          thumbnail: result.thumbnail,
-          content_urls: result.content_urls,
-          isGeoResult: true
-        }))
-
-        setFacilities(list);
-      } catch (err) {
-        console.error("初期データの読み込み失敗:", err)
-      }
-    })()
-
-  }, [mapCenter])
-
   const handleMarkerClick = (facility, e) => {
     // クリック位置を画面座標で取得
     const containerPoint = e.containerPoint
