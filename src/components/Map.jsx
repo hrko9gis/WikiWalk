@@ -177,16 +177,16 @@ const Map = ({ onFacilityClick }) => {
 
   // mapCenter が確定したら初期データを読み込む
   useEffect(() => {
-    if (!mapCenter) return;          // まだ現在地が決まっていない
+    if (!mapCenter) return
 
     (async () => {
       try {
         const results = await searchNearby(
           mapCenter.lat,
           mapCenter.lng,
-          5000,
-          20
-        );
+          10000,
+          120
+        )
 
         const list = results.map((result, index) => ({
           id: `geo_${result.pageid || index}`,
@@ -197,15 +197,15 @@ const Map = ({ onFacilityClick }) => {
           thumbnail: result.thumbnail,
           content_urls: result.content_urls,
           isGeoResult: true
-        }));
+        }))
 
         setFacilities(list);
       } catch (err) {
-        console.error("初期データの読み込み失敗:", err);
+        console.error("初期データの読み込み失敗:", err)
       }
-    })();
+    })()
 
-  }, [mapCenter]);
+  }, [mapCenter])
 
   const handleMarkerClick = (facility, e) => {
     // クリック位置を画面座標で取得
