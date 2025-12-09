@@ -142,10 +142,32 @@ const Map = ({ onFacilityClick }) => {
 
   // 初期データの設定
   useEffect(() => {
+    const initialSearch = async () => {
+      try {
+        const results = await searchNearby(mapCenter.lat, mapCenter.lng, 10000, 120)
+        
+        const newFacilities = results.map((result, index) => ({
+          id: `geo_${result.pageid || index}`,
+          name: result.title,
+          position: [result.lat, result.lon],
+          wikipediaTitle: result.title,
+          extract: result.extract,
+          thumbnail: result.thumbnail,
+          content_urls: result.content_urls,
+          isGeoResult: true
+        }))
+
+        setFacilities(newFacilities)
+      } catch (err) {
+        console.error('Initial geosearch failed:', err)
+      }
+    }
+    
     if (!navigator.geolocation) {
       // 失敗 → デフォルト座標
       setMapCenter({ lat: 34.653528, lng: 135.386417 })
       setMapReady(true)
+      initialSearch()
       return
     }
     
@@ -157,10 +179,12 @@ const Map = ({ onFacilityClick }) => {
         })
         setZoomLevel(16)
         setMapReady(true)
+        initialSearch()
       },
       () => {
         setMapCenter({ lat: 34.653528, lng: 135.386417 })
         setMapReady(true)
+        initialSearch()
       },
       { enableHighAccuracy: true }
     )
@@ -174,29 +198,6 @@ const Map = ({ onFacilityClick }) => {
       </div>
     )
   }
-
-  const initialSearch = async () => {
-    try {
-      const results = await searchNearby(mapCenter.lat, mapCenter.lng, 10000, 120)
-      
-      const newFacilities = results.map((result, index) => ({
-        id: `geo_${result.pageid || index}`,
-        name: result.title,
-        position: [result.lat, result.lon],
-        wikipediaTitle: result.title,
-        extract: result.extract,
-        thumbnail: result.thumbnail,
-        content_urls: result.content_urls,
-        isGeoResult: true
-      }))
-
-      setFacilities(newFacilities)
-    } catch (err) {
-      console.error('Initial geosearch failed:', err)
-    }
-  }
-
-  initialSearch()
 
   const handleMarkerClick = (facility, e) => {
     // クリック位置を画面座標で取得
