@@ -142,27 +142,6 @@ const Map = ({ onFacilityClick }) => {
 
   // 初期データの設定
   useEffect(() => {
-    const initialSearch = async () => {
-      try {
-        const results = await searchNearby(mapCenter.lat, mapCenter.lng, 10000, 120)
-        
-        const newFacilities = results.map((result, index) => ({
-          id: `geo_${result.pageid || index}`,
-          name: result.title,
-          position: [result.lat, result.lon],
-          wikipediaTitle: result.title,
-          extract: result.extract,
-          thumbnail: result.thumbnail,
-          content_urls: result.content_urls,
-          isGeoResult: true
-        }))
-
-        setFacilities(newFacilities)
-      } catch (err) {
-        console.error('Initial geosearch failed:', err)
-      }
-    }
-    
     if (!navigator.geolocation) {
       // 失敗 → デフォルト座標
       setMapCenter({ lat: 34.653528, lng: 135.386417 })
@@ -186,6 +165,35 @@ const Map = ({ onFacilityClick }) => {
       { enableHighAccuracy: true }
     )
   }, [])
+
+  // 初期データの設定
+  useEffect(() => {
+    if (!mapReady) return
+    if (!mapCenter) return
+    
+    const initialSearch = async () => {
+      try {
+        const results = await searchNearby(mapCenter.lat, mapCenter.lng, 10000, 120)
+        
+        const newFacilities = results.map((result, index) => ({
+          id: `geo_${result.pageid || index}`,
+          name: result.title,
+          position: [result.lat, result.lon],
+          wikipediaTitle: result.title,
+          extract: result.extract,
+          thumbnail: result.thumbnail,
+          content_urls: result.content_urls,
+          isGeoResult: true
+        }))
+
+        setFacilities(newFacilities)
+      } catch (err) {
+        console.error('Initial geosearch failed:', err)
+      }
+    }
+    
+    initialSearch()
+  }, [mapReady, mapCenter])
 
   // 読み込み中はローディング表示
   if (!mapReady || !mapCenter) {
