@@ -174,6 +174,9 @@ const Map = ({ onFacilityClick }) => {
       </div>
     )
   }
+  
+  const map = useMap()
+  map.locate({ setView: true, maxZoom: 16 })
 
   const handleMarkerClick = (facility, e) => {
     // クリック位置を画面座標で取得
